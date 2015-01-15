@@ -47,7 +47,7 @@
 						table+="<td>1</td>";
 					}
 				}
-				table+="<td><select id=\"row"+i+"\" name=\"val\" value=\"\" style=\"width:\"100%\"><option value=\"0\">0</option><option value=\"1\">1</option></select>";
+				table+="<td><select id=\"row"+i+"\" name=\"val\" value=\"\" style=\"width:\"100%\" class=\"tableTruth\"><option value=\"0\">0</option><option value=\"1\">1</option></select>";
 				table+="</tr>";
 				//OLD CODE DON'T TOUCH
 				// Create an <input> element, set its type and name attributes
@@ -107,7 +107,7 @@
     		//if no minterms, expression is true
     		if(SOP.length == 0)
     		{
-    			alert("1");
+    			alert("0");
     			return 0;
     		}
 
@@ -145,7 +145,9 @@
 </head>
 
 <body>
-<div>Variables:</div>
+<h1 id="header">Un-Truthful</h1>
+<h2>Enter the truth table, find the least cost boolean expression</h2>
+<div># of Variables:</div>
     <select id="val" name="val" value="">
 		<option value="1">1</option>
 		<option value="2">2</option>
@@ -161,6 +163,7 @@
 	<div id="spacing"></div>
     <div id="container"></div>
 	<div id="table"></div>
+	<br/>
 	<div>
 		<input type='button' value='Calculate Sum of Products' id ='calculate' onclick='calculateSOP()' style ='display:none'/>
 	</div>
