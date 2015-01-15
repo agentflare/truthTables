@@ -1,5 +1,6 @@
 <html>
 <head>
+	<link rel="stylesheet" href="style.css" media="screen" type="text/css" />
     <script type='text/javascript'>
         function addFields(){
             // Number of inputs to create
@@ -10,9 +11,19 @@
             while (container.hasChildNodes()) {
                 container.removeChild(container.lastChild);
             }
+			//Create the HTML table to hold the truth table.
+			var table = "<table><tr>";
+			//Add the header
+			var headerString=new Array("a","b","c","d","e","f");
+			for(l=0;l<number;l++)
+			{
+				table+="<th>"+ headerString[l]+"</th>";
+			}
+			table+="<th>f(x)</th></tr>";
+			
             for (i=0;i<Math.pow(2,number);i++){
-				// Append a node with Row indication
-				container.appendChild(document.createTextNode("Row " + (i+1)+" "));
+				// Append a node with Row indication DEBUG
+				//container.appendChild(document.createTextNode("Row " + (i+1)+" "));
 				//Break down i into binary representation
 				var a=new Array();
 				var k=i;
@@ -21,24 +32,47 @@
 					a[c]=k%2;
 					k=(k-k%2)/2;
 				}
-				
+				//a is in reverse order
+				table+="<tr>";
 				for (j=number-1;j>=0;j--)
 				{
 					if(a[j]==0)
-						container.appendChild(document.createTextNode("F\t\t"));
+					{
+						//container.appendChild(document.createTextNode("0"));DEBUG
+						table+="<td>0</td>";
+					}
 					else
-						container.appendChild(document.createTextNode("T\t\t"));
+					{
+						//container.appendChild(document.createTextNode("1"));DEBUG
+						table+="<td>1</td>";
+					}
 				}
+				table+="<td><select id=\"row"+i+"\" name=\"val\" value=\"\" style=\"width:\"100%\"><option value=\"1\">0</option><option value=\"2\">1</option></select>";
+				table+="</tr>";
+				//OLD CODE DON'T TOUCH
 				// Create an <input> element, set its type and name attributes
-				var input = document.createElement("input");
-				input.size="3";
-				input.type = "text";
-				input.name = "member" + i+","+j;
-				input.id = "row" + i;
-				container.appendChild(input);
+				//var input = document.createElement("input");
+				//input.size="3";
+				//input.type = "text";
+				//input.name = "member" + i+","+j;
+				//input.id = "row" + i;
+				//container.appendChild(input);
+				//var input2 = document.createElement("select");
+				//var option = document.createElement("option");
+				//option.text="0";
+				//input2.add(option,input2[0]);
+				//var option2 = document.createElement("option");
+				//option2.text="1";
+				//input2.add(option2,input2[1]);
+				//container.appendChild(input2);
 				// Append a line break 
-				container.appendChild(document.createElement("br"));
+				//container.appendChild(document.createElement("br"));
             }
+				table+="</table>";
+				
+				var inputFormula;
+				inputFormula = document.getElementById("table");
+				inputFormula.innerHTML=table;
         }
     </script>
 </head
@@ -53,7 +87,11 @@
 		<option value="6">6</option>
 	</select>
 	<br/><br/>
-    <a href="#" id="filldetails" onclick="addFields()">Create Table</a>
-    <div id="container"/>
+	<input type="button" value="Generate Table" id="filldetails" onclick="addFields()"/>
+	<br/>
+	<br/>
+	<div id="spacing"></div>
+    <div id="container"></div>
+	<div id="table"></div>
 </body>
 </html>
