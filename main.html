@@ -4,7 +4,7 @@
     <script type='text/javascript'>
         function addFields(){
             // Number of inputs to create
-            var number = document.getElementById("val").value;
+            number = document.getElementById("val").value;
             // Container <div> where dynamic content will be placed
             var container = document.getElementById("container");
             // Clear previous contents of the container
@@ -14,14 +14,14 @@
 			//Create the HTML table to hold the truth table.
 			var table = "<table><tr>";
 			//Add the header
-			var headerString=new Array("a","b","c","d","e","f");
+			headerString=new Array("a","b","c","d","e","f");
 			for(l=0;l<number;l++)
 			{
 				table+="<th>"+ headerString[l]+"</th>";
 			}
 			table+="<th>f(x)</th></tr>";
 			
-            for (i=0;i<Math.pow(2,number);i++){
+            for (var i=0;i<Math.pow(2,number);i++){
 				// Append a node with Row indication DEBUG
 				//container.appendChild(document.createTextNode("Row " + (i+1)+" "));
 				//Break down i into binary representation
@@ -47,7 +47,7 @@
 						table+="<td>1</td>";
 					}
 				}
-				table+="<td><select id=\"row"+i+"\" name=\"val\" value=\"\" style=\"width:\"100%\" class=\"tableTruth\"><option value=\"1\">0</option><option value=\"2\">1</option></select>";
+				table+="<td><select id=\"row"+i+"\" name=\"val\" value=\"\" style=\"width:\"100%\"><option value=\"0\">0</option><option value=\"1\">1</option></select>";
 				table+="</tr>";
 				//OLD CODE DON'T TOUCH
 				// Create an <input> element, set its type and name attributes
@@ -73,9 +73,77 @@
 				var inputFormula;
 				inputFormula = document.getElementById("table");
 				inputFormula.innerHTML=table;
+				document.getElementById('calculate').style.display = 'inline';
         }
     </script>
-</head
+
+    <script type='text/javascript'>
+    	function calculateSOP()
+    	{
+    		//Array for Can-SOP
+    		var SOP = new Array();
+    		alert(Math.pow(2,1));
+    		//read in each minterm and converts to binary eq
+    		for(var i=0;i<Math.pow(2,number);i++)
+    		{
+				if(document.getElementById("row"+i).value == 1)
+				{
+					var s = 0;
+					var k = i;
+					for(var j=number; j>=0;j--)
+					{
+						if(Math.pow(2,j)<=k)
+						{
+							s+=Math.pow(10,j);
+							k-=Math.pow(2,j);
+						}
+					}
+					
+					SOP[SOP.length] = s;
+				}
+    		}
+    		//creates a string for SOP and writes boolean values as variables
+    		var printOut = ""
+
+    		//if no minterms, expression is true
+    		if(SOP.length == 0)
+    		{
+    			alert("1");
+    			return 0;
+    		}
+
+
+    		//reduce SOP with Quin whatevers method here ***
+
+
+    		//converts boolean values to variables
+    		for(var i=0;i<SOP.length;i++)
+    		{
+    			var term =""
+    			for(var j=number-1;j>=0;j--)
+                {
+                	if(SOP[i]>=(Math.pow(10,j)*2))
+                	{
+                		SOP[i]-=(Math.pow(10,j)*2);
+                	}
+                	else if(SOP[i]>=Math.pow(10,j))
+                	{
+                		SOP[i]-=(Math.pow(10,j));
+                		term += headerString[number-j-1];
+                	}
+                	else
+                	{
+                		term += "!" + headerString[number-j-1];
+                	}
+                }
+                printOut+=term;
+    			printOut+= " + ";
+    		}
+    		alert(printOut);
+    	}
+    </script>
+</head>
+
 <body>
 <div>Variables:</div>
     <select id="val" name="val" value="">
@@ -93,5 +161,8 @@
 	<div id="spacing"></div>
     <div id="container"></div>
 	<div id="table"></div>
+	<div>
+		<input type='button' value='Calculate Sum of Products' id ='calculate' onclick='calculateSOP()' style ='display:none'/>
+	</div>
 </body>
 </html>
