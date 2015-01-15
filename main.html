@@ -1,0 +1,59 @@
+<html>
+<head>
+    <script type='text/javascript'>
+        function addFields(){
+            // Number of inputs to create
+            var number = document.getElementById("val").value;
+            // Container <div> where dynamic content will be placed
+            var container = document.getElementById("container");
+            // Clear previous contents of the container
+            while (container.hasChildNodes()) {
+                container.removeChild(container.lastChild);
+            }
+            for (i=0;i<Math.pow(2,number);i++){
+				// Append a node with Row indication
+				container.appendChild(document.createTextNode("Row " + (i+1)+" "));
+				//Break down i into binary representation
+				var a=new Array();
+				var k=i;
+				for(c=0;c<number;c++)
+				{
+					a[c]=k%2;
+					k=(k-k%2)/2;
+				}
+				
+				for (j=number-1;j>=0;j--)
+				{
+					if(a[j]==0)
+						container.appendChild(document.createTextNode("F\t\t"));
+					else
+						container.appendChild(document.createTextNode("T\t\t"));
+				}
+				// Create an <input> element, set its type and name attributes
+				var input = document.createElement("input");
+				input.size="3";
+				input.type = "text";
+				input.name = "member" + i+","+j;
+				input.id = "row" + i;
+				container.appendChild(input);
+				// Append a line break 
+				container.appendChild(document.createElement("br"));
+            }
+        }
+    </script>
+</head
+<body>
+<div>Variables:</div>
+    <select id="val" name="val" value="">
+		<option value="1">1</option>
+		<option value="2">2</option>
+		<option value="3">3</option>
+		<option value="4">4</option>
+		<option value="5">5</option>
+		<option value="6">6</option>
+	</select>
+	<br/><br/>
+    <a href="#" id="filldetails" onclick="addFields()">Create Table</a>
+    <div id="container"/>
+</body>
+</html>
