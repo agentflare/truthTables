@@ -82,7 +82,6 @@
     	{
     		//Array for Can-SOP
     		var SOP = new Array();
-    		alert(Math.pow(2,1));
     		//read in each minterm and converts to binary eq
     		for(var i=0;i<Math.pow(2,number);i++)
     		{
@@ -139,6 +138,7 @@
                 printOut+=term;
     			printOut+= " + ";
     		}
+    		printOut=printOut.substring(0,printOut.length-3);
     		alert(printOut);
     	}
     </script>
