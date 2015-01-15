@@ -1,0 +1,1 @@
+Truth table to least cost expression
