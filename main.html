@@ -84,30 +84,47 @@
 
     <script type='text/javascript'>
 	    function combineTerms(SOP)
-	    	{
-	    		var changed = 0;
-	    		for(var i = 0; i<SOP.length-1; i++)
-	    		{
-	    			for(var j = i+1; j<SOP.length; j++)
-	    			{
-	    				var difference = Math.abs(SOP[i] - SOP[j]);
-	    				var matched = 0;
-	    				for(var k = number; k>=0 && !matched; k--)
-	    					{
-	    						if(difference==Math.pow(10,k))
-	    						{
-	    							SOP[i] = Math.max(SOP[i], SOP[j]) + difference;
-	    							SOP.splice(j, 1);
-	    							changed = 1;
-	    							matched = 1;
-	    						}
-	    					}
-	    			}
-	    		}
-	    		if(!changed)
-	    			return SOP;
-	    		return combineTerms(SOP);
-	       	}
+    	{
+    		var SOPnew = SOP.slice();
+    		var changed = 0;
+    		for(var i = 0; i<SOPnew.length; i++)
+    		{ 
+    			var matched = 0;
+    			for(var j = 0; j<SOP.length && !matched; j++)
+    			{
+    				var difference = Math.abs(SOPnew[i] - SOP[j]);
+    				for(var k = number; k>=0 && !matched; k--)
+    					{
+    						if(difference==Math.pow(10,k))
+    						{
+    							SOPnew[i] = Math.max(SOPnew[i], SOP[j]) + difference;
+    							changed = 1;
+    							matched = 1;
+    						}
+    					}
+    			}
+    		}
+    		if(!changed)
+    			return SOPnew;
+    		return combineTerms(SOPnew);
+       	}
+
+	    function removeDuplicates(SOP)
+		{
+			for(var i = 0; i<SOP.length-1; i++)
+			{
+				for(var j = i+1; j<SOP.length; j++)
+				{
+					if(SOP[i] == SOP[j])
+					{
+						SOP.splice(j,1);
+						j-=1;
+					}
+				}
+			}
+
+			return SOP;
+		}
 
 	    function convertArray(SOPi)
 	    {
@@ -171,7 +188,7 @@
 				document.getElementById("expression").innerHTML=printOut; 
     			return 0;
     		}
-    		var reducedSOP = combineTerms(SOP);
+    		var reducedSOP = removeDuplicates(combineTerms(SOP));
     		var digitalArray = convertArray(reducedSOP);
 
     		//converts boolean values to variables
