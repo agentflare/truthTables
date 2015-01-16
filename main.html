@@ -95,7 +95,6 @@
 	    							SOP.splice(j, 1);
 	    							changed = 1;
 	    							matched = 1;
-	    							alert(SOP[i]);
 	    						}
 	    					}
 	    			}
@@ -105,8 +104,9 @@
 	    		return combineTerms(SOP);
 	       	}
 
-	    function convertArray(SOP)
+	    function convertArray(SOPi)
 	    {
+	    	SOP = SOPi.splice()
 	    	var digitalSOP = new Array();
 	    	for(var i = 0; i<SOP.length; i++)
 	    	{
@@ -130,6 +130,7 @@
 	    			}
 	    		}
 	    	}
+	    	return digitalSOP;
 	    }
 
     	function calculateSOP()
@@ -167,9 +168,8 @@
     		var reducedSOP = combineTerms(SOP);
     		var digitalArray = convertArray(reducedSOP);
 
-
     		//converts boolean values to variables
-    		/* for(var i=0;i<reducedSOP.length;i++)
+    		for(var i=0;i<reducedSOP.length;i++)
     		{
     			var term =""
     			for(var j=number-1;j>=0;j--)
@@ -192,7 +192,7 @@
     			printOut+= " + ";
     		}
     		printOut=printOut.substring(0,printOut.length-3);
-    		alert(reducedSOP[0]); */
+    		alert(printOut); 
     	}
     </script>
 </head>
