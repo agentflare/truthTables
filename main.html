@@ -11,6 +11,11 @@
             while (container.hasChildNodes()) {
                 container.removeChild(container.lastChild);
             }
+            var exp = document.getElementById("expression");
+            // Clear previous contents of the container
+            while (exp.hasChildNodes()) {
+                exp.removeChild(exp.lastChild);
+            }
 			//Create the HTML table to hold the truth table.
 			var table = "<table><tr>";
 			//Add the header
@@ -157,12 +162,13 @@
 				}
     		}
     		//creates a string for SOP and writes boolean values as variables
-    		var printOut = ""
+    		var printOut = "<br/>"
 
     		//if no minterms, expression is true
     		if(SOP.length == 0)
     		{
-    			alert("0");
+				printOut="0";
+				document.getElementById("expression").innerHTML=printOut; 
     			return 0;
     		}
     		var reducedSOP = combineTerms(SOP);
@@ -192,7 +198,7 @@
     			printOut+= " + ";
     		}
     		printOut=printOut.substring(0,printOut.length-3);
-    		alert(printOut); 
+    		document.getElementById("expression").innerHTML=printOut; 
     	}
     </script>
 </head>
@@ -219,5 +225,6 @@
 	<div>
 		<input type='button' value='Calculate Sum of Products' id ='calculate' onclick='calculateSOP()' style ='display:none'/>
 	</div>
+	<div id="expression"></div>
 </body>
 </html>
