@@ -128,7 +128,7 @@
 
 	    function convertArray(SOPi)
 	    {
-	    	SOP = SOPi.splice()
+	    	SOP = SOPi.slice()
 	    	var digitalSOP = new Array();
 	    	for(var i = 0; i<SOP.length; i++)
 	    	{
@@ -185,25 +185,27 @@
     		if(SOP.length == 0)
     		{
 				printOut="0";
-				document.getElementById("expression").innerHTML=printOut; 
-    			return 0;
-    		}
-    		var reducedSOP = removeDuplicates(combineTerms(SOP));
-    		var digitalArray = convertArray(reducedSOP);
-
-    		//converts boolean values to variables
-    		for(var i=0;i<reducedSOP.length;i++)
-    		{
-    			var term =""
-    			for(var j=number-1;j>=0;j--)
-                {
-                	if(reducedSOP[i]>=(Math.pow(10,j)*2))
-                	{
-                		reducedSOP[i]-=(Math.pow(10,j)*2);
-                	}
-                	else if(reducedSOP[i]>=Math.pow(10,j))
-                	{
-                		reducedSOP[i]-=(Math.pow(10,j));
+					document.getElementById("expression").innerHTML=printOut; 
+	    			return 0;
+	    		}
+	    		var digitalMinTerms = convertArray(SOP.slice());
+	    		alert(digitalMinTerms);
+	    		var reducedSOP = removeDuplicates(combineTerms(SOP));
+	    		var digitalArray = convertArray(reducedSOP);
+	    		alert(digitalArray);
+	    		//converts boolean values to variables
+	    		for(var i=0;i<reducedSOP.length;i++)
+	    		{
+	    			var term =""
+	    			for(var j=number-1;j>=0;j--)
+	                {
+	                	if(reducedSOP[i]>=(Math.pow(10,j)*2))
+	                	{
+	                		reducedSOP[i]-=(Math.pow(10,j)*2);
+	                	}
+	                	else if(reducedSOP[i]>=Math.pow(10,j))
+	                	{
+	                		reducedSOP[i]-=(Math.pow(10,j));
                 		term += headerString[number-j-1];
                 	}
                 	else
