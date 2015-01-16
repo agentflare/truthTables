@@ -78,6 +78,60 @@
     </script>
 
     <script type='text/javascript'>
+	    function combineTerms(SOP)
+	    	{
+	    		var changed = 0;
+	    		for(var i = 0; i<SOP.length-1; i++)
+	    		{
+	    			for(var j = i+1; j<SOP.length; j++)
+	    			{
+	    				var difference = Math.abs(SOP[i] - SOP[j]);
+	    				var matched = 0;
+	    				for(var k = number; k>=0 && !matched; k--)
+	    					{
+	    						if(difference==Math.pow(10,k))
+	    						{
+	    							SOP[i] = Math.max(SOP[i], SOP[j]) + difference;
+	    							SOP.splice(j, 1);
+	    							changed = 1;
+	    							matched = 1;
+	    							alert(SOP[i]);
+	    						}
+	    					}
+	    			}
+	    		}
+	    		if(!changed)
+	    			return SOP;
+	    		return combineTerms(SOP);
+	       	}
+
+	    function convertArray(SOP)
+	    {
+	    	var digitalSOP = new Array();
+	    	for(var i = 0; i<SOP.length; i++)
+	    	{
+	    		digitalSOP[i] = new Array();
+	    		for(var j = number-1; j>=0; j--)
+	    		{
+	    			if(SOP[i] >= Math.pow(10,j)*2)
+	    			{
+	    				digitalSOP[i][number-1-j]='2';
+	    				SOP[i]-=Math.pow(10,j)*2;
+
+	    			}
+	    			else if(SOP[i] >= Math.pow(10,j))
+	    				{
+	    					digitalSOP[i][number-1-j] = '1';
+	    					SOP[i]-=Math.pow(10,j);
+	    				}
+	    			else
+	    			{
+	    				digitalSOP[i][number-1-j] = '0';
+	    			}
+	    		}
+	    	}
+	    }
+
     	function calculateSOP()
     	{
     		//Array for Can-SOP
@@ -110,24 +164,23 @@
     			alert("0");
     			return 0;
     		}
-
-
-    		//reduce SOP with Quin whatevers method here ***
+    		var reducedSOP = combineTerms(SOP);
+    		var digitalArray = convertArray(reducedSOP);
 
 
     		//converts boolean values to variables
-    		for(var i=0;i<SOP.length;i++)
+    		/* for(var i=0;i<reducedSOP.length;i++)
     		{
     			var term =""
     			for(var j=number-1;j>=0;j--)
                 {
-                	if(SOP[i]>=(Math.pow(10,j)*2))
+                	if(reducedSOP[i]>=(Math.pow(10,j)*2))
                 	{
-                		SOP[i]-=(Math.pow(10,j)*2);
+                		reducedSOP[i]-=(Math.pow(10,j)*2);
                 	}
-                	else if(SOP[i]>=Math.pow(10,j))
+                	else if(reducedSOP[i]>=Math.pow(10,j))
                 	{
-                		SOP[i]-=(Math.pow(10,j));
+                		reducedSOP[i]-=(Math.pow(10,j));
                 		term += headerString[number-j-1];
                 	}
                 	else
@@ -139,11 +192,10 @@
     			printOut+= " + ";
     		}
     		printOut=printOut.substring(0,printOut.length-3);
-    		alert(printOut);
+    		alert(reducedSOP[0]); */
     	}
     </script>
 </head>
-
 <body>
 <h1 id="header">Un-Truthful</h1>
 <h2>Enter the truth table, find the least cost boolean expression</h2>
