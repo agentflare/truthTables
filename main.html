@@ -95,11 +95,23 @@
     				var difference = Math.abs(SOPnew[i] - SOP[j]);
     				for(var k = number; k>=0 && !matched; k--)
     					{
-    						if(difference==Math.pow(10,k))
+    						if(difference==Math.pow(10,k) && (((Math.max(SOPnew[i],SOP[j]))-difference)%Math.pow(10,k+1)/Math.pow(10,k)<1))
     						{
-    							SOPnew[i] = Math.max(SOPnew[i], SOP[j]) + difference;
-    							changed = 1;
-    							matched = 1;
+    							var alreadyPresent = 0;
+    							var mergedterm = Math.max(SOPnew[i], SOP[j]) + difference;
+								for(var b = 0; b<SOPnew.length; b++)
+								{
+									if(SOPnew[b] == mergedterm)
+									{
+										alreadyPresent = 1;
+									}
+								}
+    							if(!alreadyPresent)
+    							{
+	    							SOPnew[i] = mergedterm;
+	    							changed = 1;
+	    							matched = 1;
+    							}
     						}
     					}
     			}
@@ -119,6 +131,35 @@
 					{
 						SOP.splice(j,1);
 						j-=1;
+					}
+				}
+			}
+
+			return SOP;
+		}
+
+		function removeDuplicatesDigital(SOP)
+		{
+			for(var i = 0; i<SOP.length; i++)
+			{
+				for(var j = 0; j<SOP.length; j++)
+				{
+					if(i!=j)
+					{
+						var c = 0;
+						for(var k = 0; k<SOP[i].length && (SOP[i][k]==SOP[j][k] || SOP[i][k] =='2'); k++)
+						{
+							if(k==SOP[i].length-1)
+								c = 1;
+						}
+						if(c==1)
+						{
+							if(i>j)
+								i--;
+							SOP.splice(j,1);
+							j--;
+						}
+
 					}
 				}
 			}
@@ -185,36 +226,52 @@
     		if(SOP.length == 0)
     		{
 				printOut="0";
-					document.getElementById("expression").innerHTML=printOut; 
-	    			return 0;
-	    		}
+				document.getElementById("expression").innerHTML=printOut; 
+    			return 0;
+    		}
 	    		var digitalMinTerms = convertArray(SOP.slice());
 	    		alert(digitalMinTerms);
 	    		var reducedSOP = removeDuplicates(combineTerms(SOP));
-	    		var digitalArray = convertArray(reducedSOP);
+	    		alert(reducedSOP);
+	    		var digitalArray = removeDuplicatesDigital(convertArray(reducedSOP));
 	    		alert(digitalArray);
 	    		//converts boolean values to variables
-	    		for(var i=0;i<reducedSOP.length;i++)
-	    		{
-	    			var term =""
-	    			for(var j=number-1;j>=0;j--)
-	                {
-	                	if(reducedSOP[i]>=(Math.pow(10,j)*2))
-	                	{
-	                		reducedSOP[i]-=(Math.pow(10,j)*2);
-	                	}
-	                	else if(reducedSOP[i]>=Math.pow(10,j))
-	                	{
-	                		reducedSOP[i]-=(Math.pow(10,j));
-                		term += headerString[number-j-1];
-                	}
-                	else
+    		// old 
+    		/* for(var i=0;i<reducedSOP.length;i++)
+    		{
+    			var term =""
+    			for(var j=number-1;j>=0;j--)
+                {
+                	if(reducedSOP[i]>=(Math.pow(10,j)*2))
                 	{
-                		term += "!" + headerString[number-j-1];
+                		reducedSOP[i]-=(Math.pow(10,j)*2);
                 	}
-                }
-                printOut+=term;
-    			printOut+= " + ";
+                	else if(reducedSOP[i]>=Math.pow(10,j))
+                	{
+                		reducedSOP[i]-=(Math.pow(10,j));
+            		term += headerString[number-j-1];
+            	}
+            	else
+            	{
+            		term += "!" + headerString[number-j-1];
+            	}
+	            }
+	            printOut+=term;
+				printOut+= " + ";
+    		}*/
+
+    		for(var i = 0; i<digitalArray.length; i++)
+    		{
+    			var term = ""
+    			for(var j = 0; j<number;j++)
+    			{
+    				if(digitalArray[i][j] == '1')
+    					term+= headerString[j];
+    				else if(digitalArray[i][j] =='0')
+    					term+= '!' + headerString[j];
+    			}
+    			printOut+=term;
+    			printOut+= ' + ';
     		}
     		printOut=printOut.substring(0,printOut.length-3);
     		document.getElementById("expression").innerHTML=printOut; 
