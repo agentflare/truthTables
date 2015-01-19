@@ -83,6 +83,22 @@
     </script>
 
     <script type='text/javascript'>
+	    function removeDuplicates(SOP)
+		{
+			for(var i = 0; i<SOP.length-1; i++)
+			{
+				for(var j = i+1; j<SOP.length; j++)
+				{
+					if(SOP[i] == SOP[j])
+					{
+						SOP.splice(j,1);
+						j-=1;
+					}
+				}
+			}
+			return SOP;
+		}
+
 	    function combineTerms(SOP)
     	{
     		var SOPnew = SOP.slice();
@@ -118,26 +134,9 @@
     		}
     		if(!changed)
     			return SOPnew;
-    		return combineTerms(SOPnew);
+    		return combineTerms(removeDuplicates(SOP.concat(SOPnew)));
        	}
-
-	    function removeDuplicates(SOP)
-		{
-			for(var i = 0; i<SOP.length-1; i++)
-			{
-				for(var j = i+1; j<SOP.length; j++)
-				{
-					if(SOP[i] == SOP[j])
-					{
-						SOP.splice(j,1);
-						j-=1;
-					}
-				}
-			}
-
-			return SOP;
-		}
-
+	  
 		function removeDuplicatesDigital(SOP)
 		{
 			for(var i = 0; i<SOP.length; i++)
@@ -159,14 +158,11 @@
 							SOP.splice(j,1);
 							j--;
 						}
-
 					}
 				}
 			}
-
 			return SOP;
 		}
-
 	    function convertArray(SOPi)
 	    {
 	    	SOP = SOPi.slice()
@@ -180,7 +176,6 @@
 	    			{
 	    				digitalSOP[i][number-1-j]='2';
 	    				SOP[i]-=Math.pow(10,j)*2;
-
 	    			}
 	    			else if(SOP[i] >= Math.pow(10,j))
 	    				{
@@ -206,7 +201,7 @@
 			}
 
 			return a;
-		};
+		}
 		function trimIndices(indiceCount)
 		{
 			indiceCount.sort(function(a, b){return a-b});
