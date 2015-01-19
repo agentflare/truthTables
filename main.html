@@ -270,10 +270,10 @@
 			{
 				indiceList=indiceList.concat(implicants[i][0]);
 			}
-			
+			/*
 			indiceList=arrayUnique(indiceList);
 			indiceList.sort(function(a, b){return a-b});
-			/*var txt="";
+			var txt="";
 			for(i=0;i<indiceList.length;i++)
 			{
 				txt+=indiceList[i]+",";
@@ -335,7 +335,7 @@
 				var sum=0;
 				var loc=-1;
 				var rowLoc=-1;
-				var isEssential=true;
+				var isEssential=false;
 				for(j=0;j<implicantChart.length;j++)
 				{
 					if(implicantChart[j][i]==1)
@@ -348,7 +348,12 @@
 						isEssential=false;
 						break;
 					}
+					else if(sum==1)
+					{
+						isEssential=true;
+					}
 				}
+				
 				if(isEssential)
 				{
 					for(l=0;l<implicantChart[loc].length;l++)
@@ -568,6 +573,22 @@
 		<input type='button' value='Calculate Sum of Products' id ='calculate' onclick='calculateSOP()' style ='display:none'/>
 	</div>
 	<div id="expression"></div>
+	<div id = "test"></div>
+	<br/>
+	<div id= "test2"></div>
+	<br/>
+	<div id= "test3"></div>
+	<br/>
+	<div id = "test4"></div>
+	<br/>
+	<div id= "test5"></div>
+	<br/>
+	<div id= "test6"></div>
+	<br/>
+	<div id= "test7"></div>
+	<br/>
+	<div id= "test8"></div>
+	<br/>
 	
 </body>
 </html>

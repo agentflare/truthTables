@@ -43,10 +43,12 @@
 				{
 					if(a[j]==0)
 					{
+						//container.appendChild(document.createTextNode("0"));DEBUG
 						table+="<td>0</td>";
 					}
 					else
 					{
+						//container.appendChild(document.createTextNode("1"));DEBUG
 						table+="<td>1</td>";
 					}
 				}
@@ -81,23 +83,6 @@
     </script>
 
     <script type='text/javascript'>
-    
-    	function removeDuplicates(SOP)
-		{
-			for(var i = 0; i<SOP.length-1; i++)
-			{
-				for(var j = i+1; j<SOP.length; j++)
-				{
-					if(SOP[i] == SOP[j])
-					{
-						SOP.splice(j,1);
-						j-=1;
-					}
-				}
-			}
-			return SOP;
-		}
-
 	    function combineTerms(SOP)
     	{
     		var SOPnew = SOP.slice();
@@ -110,58 +95,37 @@
     				var difference = Math.abs(SOPnew[i] - SOP[j]);
     				for(var k = number; k>=0 && !matched; k--)
     					{
-    						if(difference==Math.pow(10,k) && (((Math.max(SOPnew[i],SOP[j]))-difference)%Math.pow(10,k+1)/Math.pow(10,k)<1))
+    						if(difference==Math.pow(10,k))
     						{
-    							var alreadyPresent = 0;
-    							var mergedterm = Math.max(SOPnew[i], SOP[j]) + difference;
-								for(var b = 0; b<SOPnew.length; b++)
-								{
-									if(SOPnew[b] == mergedterm)
-									{
-										alreadyPresent = 1;
-									}
-								}
-    							if(!alreadyPresent)
-    							{
-	    							SOPnew[i] = mergedterm;
-	    							changed = 1;
-	    							matched = 1;
-    							}
+    							SOPnew[i] = Math.max(SOPnew[i], SOP[j]) + difference;
+    							changed = 1;
+    							matched = 1;
     						}
     					}
     			}
     		}
     		if(!changed)
     			return SOPnew;
-    		return combineTerms(removeDuplicates(SOP.concat(SOPnew)));
+    		return combineTerms(SOPnew);
        	}
-	  
-		function removeDuplicatesDigital(SOP)
+
+	    function removeDuplicates(SOP)
 		{
-			for(var i = 0; i<SOP.length; i++)
+			for(var i = 0; i<SOP.length-1; i++)
 			{
-				for(var j = 0; j<SOP.length; j++)
+				for(var j = i+1; j<SOP.length; j++)
 				{
-					if(i!=j)
+					if(SOP[i] == SOP[j])
 					{
-						var c = 0;
-						for(var k = 0; k<SOP[i].length && (SOP[i][k]==SOP[j][k] || SOP[i][k] =='2'); k++)
-						{
-							if(k==SOP[i].length-1)
-								c = 1;
-						}
-						if(c==1)
-						{
-							if(i>j)
-								i--;
-							SOP.splice(j,1);
-							j--;
-						}
+						SOP.splice(j,1);
+						j-=1;
 					}
 				}
 			}
+
 			return SOP;
 		}
+
 	    function convertArray(SOPi)
 	    {
 	    	SOP = SOPi.slice()
@@ -175,6 +139,7 @@
 	    			{
 	    				digitalSOP[i][number-1-j]='2';
 	    				SOP[i]-=Math.pow(10,j)*2;
+
 	    			}
 	    			else if(SOP[i] >= Math.pow(10,j))
 	    				{
@@ -189,6 +154,7 @@
 	    	}
 	    	return digitalSOP;
 	    }
+
     	function calculateSOP()
     	{
     		//Array for Can-SOP
@@ -214,55 +180,41 @@
     		}
     		//creates a string for SOP and writes boolean values as variables
     		var printOut = "<br/>"
+
     		//if no minterms, expression is true
     		if(SOP.length == 0)
     		{
 				printOut="0";
-				document.getElementById("expression").innerHTML=printOut; 
-    			return 0;
-    		}
+					document.getElementById("expression").innerHTML=printOut; 
+	    			return 0;
+	    		}
 	    		var digitalMinTerms = convertArray(SOP.slice());
 	    		alert(digitalMinTerms);
 	    		var reducedSOP = removeDuplicates(combineTerms(SOP));
-	    		alert(reducedSOP);
-	    		var digitalArray = removeDuplicatesDigital(convertArray(reducedSOP));
+	    		var digitalArray = convertArray(reducedSOP);
 	    		alert(digitalArray);
 	    		//converts boolean values to variables
-    		// old 
-    		/* for(var i=0;i<reducedSOP.length;i++)
-    		{
-    			var term =""
-    			for(var j=number-1;j>=0;j--)
-                {
-                	if(reducedSOP[i]>=(Math.pow(10,j)*2))
-                	{
-                		reducedSOP[i]-=(Math.pow(10,j)*2);
+	    		for(var i=0;i<reducedSOP.length;i++)
+	    		{
+	    			var term =""
+	    			for(var j=number-1;j>=0;j--)
+	                {
+	                	if(reducedSOP[i]>=(Math.pow(10,j)*2))
+	                	{
+	                		reducedSOP[i]-=(Math.pow(10,j)*2);
+	                	}
+	                	else if(reducedSOP[i]>=Math.pow(10,j))
+	                	{
+	                		reducedSOP[i]-=(Math.pow(10,j));
+                		term += headerString[number-j-1];
                 	}
-                	else if(reducedSOP[i]>=Math.pow(10,j))
+                	else
                 	{
-                		reducedSOP[i]-=(Math.pow(10,j));
-            		term += headerString[number-j-1];
-            	}
-            	else
-            	{
-            		term += "!" + headerString[number-j-1];
-            	}
-	            }
-	            printOut+=term;
-				printOut+= " + ";
-    		}*/
-    		for(var i = 0; i<digitalArray.length; i++)
-    		{
-    			var term = ""
-    			for(var j = 0; j<number;j++)
-    			{
-    				if(digitalArray[i][j] == '1')
-    					term+= headerString[j];
-    				else if(digitalArray[i][j] =='0')
-    					term+= '!' + headerString[j];
-    			}
-    			printOut+=term;
-    			printOut+= ' + ';
+                		term += "!" + headerString[number-j-1];
+                	}
+                }
+                printOut+=term;
+    			printOut+= " + ";
     		}
     		printOut=printOut.substring(0,printOut.length-3);
     		document.getElementById("expression").innerHTML=printOut; 
@@ -293,20 +245,5 @@
 		<input type='button' value='Calculate Sum of Products' id ='calculate' onclick='calculateSOP()' style ='display:none'/>
 	</div>
 	<div id="expression"></div>
-	<div id = "test"></div>
-	<br/>
-	<div id= "test2"></div>
-	<br/>
-	<div id= "test3"></div>
-	<br/>
-	<div id = "test4"></div>
-	<br/>
-	<div id= "test5"></div>
-	<br/>
-	<div id= "test6"></div>
-	<br/>
-	<div id= "test7"></div>
-	<br/>
-	<div id= 
 </body>
 </html>
