@@ -27,8 +27,6 @@
 			table+="<th>f(x)</th></tr>";
 			
             for (var i=0;i<Math.pow(2,number);i++){
-				// Append a node with Row indication DEBUG
-				//container.appendChild(document.createTextNode("Row " + (i+1)+" "));
 				//Break down i into binary representation
 				var a=new Array();
 				var k=i;
@@ -43,35 +41,15 @@
 				{
 					if(a[j]==0)
 					{
-						//container.appendChild(document.createTextNode("0"));DEBUG
 						table+="<td>0</td>";
 					}
 					else
 					{
-						//container.appendChild(document.createTextNode("1"));DEBUG
 						table+="<td>1</td>";
 					}
 				}
 				table+="<td><select id=\"row"+i+"\" name=\"val\" value=\"\" style=\"width:\"100%\" class=\"tableTruth\"><option value=\"0\">0</option><option value=\"1\">1</option></select>";
 				table+="</tr>";
-				//OLD CODE DON'T TOUCH
-				// Create an <input> element, set its type and name attributes
-				//var input = document.createElement("input");
-				//input.size="3";
-				//input.type = "text";
-				//input.name = "member" + i+","+j;
-				//input.id = "row" + i;
-				//container.appendChild(input);
-				//var input2 = document.createElement("select");
-				//var option = document.createElement("option");
-				//option.text="0";
-				//input2.add(option,input2[0]);
-				//var option2 = document.createElement("option");
-				//option2.text="1";
-				//input2.add(option2,input2[1]);
-				//container.appendChild(input2);
-				// Append a line break 
-				//container.appendChild(document.createElement("br"));
             }
 				table+="</table>";
 				
@@ -270,9 +248,10 @@
 			{
 				indiceList=indiceList.concat(implicants[i][0]);
 			}
-			/*
+			
 			indiceList=arrayUnique(indiceList);
 			indiceList.sort(function(a, b){return a-b});
+			/*
 			var txt="";
 			for(i=0;i<indiceList.length;i++)
 			{
@@ -302,6 +281,8 @@
 					}
 				}
 			}
+			
+			//PRINT OUT THE Implicant Chart
 			/*
 			var testText5="<table><tr>";
 			testText5+="<th>Rows</th>";
@@ -325,8 +306,9 @@
 			var essentialArray= new Array();
 			var containedArray= new Array();
 			var essentialRows= new Array();
-			//Trim extra rows (THIS IS A HACK NOT A BUGFIX) I HAVE NO CLUE WHY ImplicantChart HAS 60 ROWS
+			//Trim extra rows (THIS IS A HACK NOT A BUGFIX) I HAVE NO CLUE WHY ImplicantChart HAS ~60 ROWS
 			implicantChart.splice(implicants.length,implicantChart.length-implicants.length);
+			var implicantsCopy=implicants.slice();
 			
 		
 			//We've created the Prime Implicant chart now we determine the "essential" prime implicants
@@ -342,6 +324,7 @@
 					{
 						sum+=1;
 						loc=j;
+						rowLoc=i;
 					}
 					if(sum>1)
 					{
@@ -373,19 +356,20 @@
 				}
 			}
 			removeDuplicatesDigital(essentialArray);
-			removeDuplicatesDigital(containedArray);
+			//removeDuplicatesDigital(containedArray);
+			trimIndices(essentialArray);
 			
 			//Prune the implicantChart
 			essentialRows.sort(function(a, b){return b-a});
-			var implicantsCopy=implicants.slice();
 			for(i=0;i<essentialRows.length;i++)
 			{
 				implicantsCopy.splice(essentialRows[i],1);
 				implicantChart.splice(essentialRows[i],1);
 			}
 			//TEST
+			//PRINT OUT THE reduced Implicant Chart
 			/*
-			var testText8="<table>";
+			var testText8="Reduced Table: <br/><table>";
 			for(i=0;i<implicantChart.length;i++)
 			{
 				testText8+="<tr>";
@@ -414,7 +398,7 @@
 			}
 			trimIndices(indiceCount);
 			/*
-			var testText7="";
+			var testText7="IndiceCount: ";
 			for(i=0;i<indiceCount.length;i++)
 			{
 				testText7+=indiceCount[i]+",<br/>";
@@ -574,19 +558,12 @@
 	</div>
 	<div id="expression"></div>
 	<div id = "test"></div>
-	<br/>
 	<div id= "test2"></div>
-	<br/>
 	<div id= "test3"></div>
-	<br/>
 	<div id = "test4"></div>
-	<br/>
 	<div id= "test5"></div>
-	<br/>
 	<div id= "test6"></div>
-	<br/>
 	<div id= "test7"></div>
-	<br/>
 	<div id= "test8"></div>
 	<br/>
 	
